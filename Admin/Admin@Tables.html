@@ -1,0 +1,174 @@
+                <div id="page-content" class="page-content">
+                    <!-- BEGIN PAGE HEAD -->
+                    <div class="page-head">
+                        <!-- BEGIN PAGE TITLE -->
+                        <div class="page-title">
+                            <h1>Tables <small>manage tables</small></h1>
+                        </div>
+                        <!-- END PAGE TITLE -->
+                        <!-- BEGIN PAGE TOOLBAR -->
+                        <div class="page-toolbar">
+                            <div class="btn-group pull-right">
+                                <!--<button type="button" class="btn btn-primary btn-danger" data-toggle="modal" data-target="#addTableModal">
+							        Add a New Table
+								</button>-->
+								<button type="button" class="btn btn-primary btn-danger" data-bind="click: createTable">
+							        Add a New Table
+								</button>
+                                <button type="button" class="btn btn-fit-height btn-info" data-bind="click: refresh">
+                                    <i class="fa fa-refresh"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- END PAGE TOOLBAR -->
+						
+                    </div>
+                    
+                    <!-- END PAGE HEAD -->
+                    <!-- BEGIN PAGE BREADCRUMB -->
+                    <ul class="page-breadcrumb breadcrumb">
+                        <li>
+                            <a href="#">Home</a><i class="fa fa-circle"></i>
+                        </li>
+                        <li class="active">
+                            Tables
+                        </li>
+                    </ul>
+                    <!-- END PAGE BREADCRUMB -->
+                    <!-- BEGIN PAGE CONTENT INNER -->
+                    <div class="row listTables">
+                        <div class="col-md-12">
+                            <div class="portlet box blue">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-gift"></i> Table Management
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                            <div id="modellist" class="panel-group accordion hide" data-bind="foreach: modelList">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 data-bind="ifnot: IsEditable" class="panel-title">
+                                            
+                                            <div class="accordion-toggle">
+                                                <article>
+                                                <a class="accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#modellist" data-bind="text: Name, attr: { href: '#model' + Id()}"></a>
+                                                <aside class="btn-group btn-group-justified">
+                                                    <a data-bind="click: $parent.renameTable" class="rename btn btn-sm yellow" href="javascript:;"><i class="fa fa-pencil"></i><span>Rename</span></a>
+                                                    <a data-bind="click: $parent.removeTable" class="delete btn btn-sm red" href="javascript:;"><i class="fa fa-trash-o"></i><span>Delete</span></a>
+                                                    <a class="btn btn-sm blue" data-toggle="collapse" data-parent="#modellist" data-bind="attr: { href: '#model' + Id()}"><i class="fa fa-columns"></i><span>Columns</span></a>
+                                                </aside>
+                                                </article>
+                                            </div>
+                                        </h4>
+                                        <h4 data-bind="if: IsEditable" class="panel-title">
+                                            <div class="accordion-toggle editTable">
+                                                <article>
+                                                    <input data-bind="textInput: Name, hasfocus: true" class="tableName" />
+                                                    <aside class="btn-group btn-group-justified">
+                                                        <a data-bind="click: $parent.addTable" class="save btn btn-sm green" href="javascript:;"><i class="fa fa-save"></i><span>Save</span></a>
+                                                        <a data-bind="click: $parent.cancelTable" class="save btn btn-sm red" href="javascript:;"><i class="fa fa-times"></i><span>Cancel</span></a>
+                                                    </aside>
+                                                </article>
+                                            </div>
+                                        </h4>
+                                    </div>
+                                    <div data-bind="attr: {id: 'model' + Id()}" class="panel-collapse collapse" style="height: 0px;">
+                                        <div class="panel-body">
+                                            <table class="table table-condensed table-striped">
+                                                <thead>
+                                                    <tr><th style="width:10px"></th>
+                                                        <th>ColumnName</th>
+                                                        <th>Default Value</th>
+                                                        <th>Max. Length</th>
+                                                        <th>DataType</th>
+                                                        <th>Ref. Table</th>
+                                                        <th style="width:23%">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody data-bind="foreach: Columns">
+                                                    
+                                                    <tr data-bind="css: { 'alert alert-danger ' : IsReferenceValid === false }, attr: { title: ErrorMsg }">
+                                                        <td><i data-bind="visible: IsReferenceValid === false" class="fa fa-warning warningReference-toolTip"></i></td>
+                                                        <td>
+                                                            <input type="text" name="columnName" data-bind="enable: IsEditable || IsNew || IsEditableWithReference || IsEditableWithOutReference , value:ColumnName" class="form-control input-sm" />
+                                                        </td>
+                                                        <td data-bind="text: ColumnDefault"></td>
+                                                        <td data-bind="text: CharacterMaximumLength"></td>
+                                                        <td>
+                                                            <select class="form-control input-sm" data-bind="enable: IsNew, options: IsNew === true ? Tables.dataTypeList : Tables.dataTypeListReadOnly, value: DataType, optionsCaption: 'Choose...',valueAllowUnset: true">
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                        <div data-bind="template: { name: 'editReference', if: IsEditableWithReference}"></div>
+                                                        <div data-bind="ifnot: IsEditableWithReference">
+                                                            <span data-bind="text: ReferenceTableName" ></span>
+                                                        </div>
+                                                        </td>
+                                                        <td>
+                                                            <div data-bind="template: { name: 'column-new', if: IsNew === true }"></div>
+                                                            <div data-bind="template: { name: 'column-update', if: IsEditable === true }"></div>
+                                                            <div data-bind="template: { name: 'column-updateWithReference', if: IsEditableWithReference === true }"></div>
+                                                            <div data-bind="template: { name: 'column-updateWithoutReference', if: IsEditableWithOutReference === true }"></div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <script type="text/html" id="column-new">
+                            <div class="btn-group btn-group-justified">
+                                <a data-bind="click: Tables.addColumn" class="save btn btn-sm green" href="javascript:;"><i class="fa fa-save"></i><span title="Save">Save</span></a>
+                            </div>
+                        </script>
+                        <script type="text/html" id="column-update">
+                            <div class="btn-group btn-group-justified">
+                                <a data-bind="click: Tables.renameColumn" class="save btn btn-sm green" href="javascript:;"><i class="fa fa-pencil"></i><span title="Rename">Rename</span></a>
+                                <a data-bind="click: Tables.removeColumn" class="delete btn btn-sm red" href="javascript:;"><i class="fa fa-trash-o"></i><span title="Delete">Delete</span></a>
+                            </div>
+                        </script>
+                        <script type="text/html" id="column-updateWithReference">
+                            <div class="btn-group btn-group-justified">
+                                <a data-bind="click: Tables.renameColumn" class="rename btn btn-sm green" href="javascript:;"><i class="fa fa-pencil"></i><span title="Rename">Rename</span></a>
+                                <a data-bind="click: Tables.addReference" class="save btn btn-sm yellow" href="javascript:;"><i class="fa fa-exchange"></i><span title="Add Reference">Add Ref.</span></a>
+                                <a data-bind="click: Tables.removeColumn" class="delete btn btn-sm red" href="javascript:;"><i class="fa fa-trash-o"></i><span title="Delete">Delete</span></a>
+                            </div>
+                        </script>
+                        <script type="text/html" id="column-updateWithoutReference">
+                            <div class="btn-group btn-group-justified">
+                                <a data-bind="click: Tables.renameColumn" class="rename btn btn-sm green" href="javascript:;"><i class="fa fa-pencil"></i><span title="Rename">Rename</span></a>
+                                <a data-bind="click: Tables.removeRefernce" class="save btn btn-sm yellow" href="javascript:;"><i class="fa fa-unlink"></i><span title="Remove Reference">Remove Ref.</span></a>
+                                <a data-bind="click: Tables.removeColumn" class="delete btn btn-sm red" href="javascript:;"><i class="fa fa-trash-o"></i><span title="Delete">Delete</span></a>
+                            </div>
+                        </script>
+                        <script type="text/html" id="editReference">
+                            <select class="form-control input-sm" data-bind="enable: IsEditableWithReference, options: Tables.modelList ,optionsText: 'Name', optionsValue: 'Name',  value: ReferenceTableName, optionsCaption: 'Choose...',valueAllowUnset: true">
+                            </select>
+                        </script>
+                        <script type="text/html" id="displayReference">
+                            <span databind="text: ReferenceTableName"><span>
+                        </script>
+                        
+                        <script src="/themes/admin/assets/admin/pages/scripts/tables.js" type="text/javascript"></script>
+                        <!-- END PAGE LEVEL SCRIPTS -->
+                        <script>
+                            jQuery(document).ready(function () {
+                                
+                                Metronic.init(); // init metronic core componets
+                                Layout.init(); // init layout
+                                validateLogin();
+                                Tables.init();
+                                $("#modellist").removeClass("hide");
+                                ko.applyBindings(Tables);
+                                
+                            });
+                        </script>
+                    </div>
+                    <!-- END PAGE CONTENT INNER -->
+                </div>

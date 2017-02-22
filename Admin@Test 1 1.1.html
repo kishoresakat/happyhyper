@@ -1,0 +1,242 @@
+                <div id="page-content" class="page-content">
+                    <!-- BEGIN PAGE HEAD -->
+                    <div class="page-head">     
+                        <!-- BEGIN PAGE TITLE -->
+                        <div class="page-title">
+                            <h1>Pages <small>manage pages</small></h1>
+                        </div>
+                        <!-- END PAGE TITLE -->
+                        <!-- BEGIN PAGE TOOLBAR -->
+                        <div class="page-toolbar">
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-fit-height btn-warning" data-bind="click: createNewTab">
+                                    Add a New Tab
+                                </button>
+                                <button type="button" class="btn btn-fit-height btn-danger" data-bind="click: createNewPage">
+                                    Add a New Page
+                                </button>
+                                <button type="button" class="btn btn-fit-height btn-info" data-bind="click: refresh">
+                                    <i class="fa fa-refresh"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- END PAGE TOOLBAR -->
+                    </div>
+                    <!-- END PAGE HEAD -->
+                    <!-- BEGIN PAGE BREADCRUMB -->
+                    <ul class="page-breadcrumb breadcrumb">
+                        <li>
+                            <a href="#">Home</a><i class="fa fa-circle"></i>
+                        </li>
+                        <li class="active">
+                            Pages
+                        </li>
+                    </ul>
+                    <!-- END PAGE BREADCRUMB -->
+                    <!-- BEGIN PAGE CONTENT INNER -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="portlet box blue">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-gift"></i> Page Management
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div id="page-list-container" class="dd">
+                                        <ol id="modellist" class="dd-list" data-bind="foreach: menu">
+                                            <li class="dd-item dd3-item" data-bind="attr: {id: 'model' + Id, 'data-index': OrderIndex, 'data-id': Id}, css: {'dd-item-tab': (ObjectType == 'tab'), 'dd-item-page': (ObjectType == 'page')}">
+                                                <div class="dd-handle dd3-handle"></div>
+                                                <div class="dd3-content">
+                                                    <div data-bind="click: $root.selectModel, text: Name"></div>
+                                                </div>
+                                                <!-- ko if: (ObjectType == 'tab') -->
+                                                <ol class="dd-list" data-bind="foreach: Pages">
+                                                    <li class="dd-item dd3-item" data-bind="attr: {id: 'model' + Id, 'data-index': OrderIndex, 'data-id': Id}, css: {'dd-item-tab': (ObjectType == 'tab'), 'dd-item-page': (ObjectType == 'page')}">
+                                                        <div class="dd-handle dd3-handle"></div>
+                                                        <div class="dd3-content">
+                                                            <div data-bind="click: $root.selectModel, text: Name"></div>
+                                                        </div>
+                                                    </li>
+                                                </ol>
+                                                <!-- /ko -->
+                                            </li>                                        
+                                        </ol>
+                                    </div>
+                                    <div id="page-model-content">
+                                        <form id="tabs-form" action="#" class="form" data-bind="visible: model.ObjectType() == 'tab'">
+                                            <div class="alert alert-danger display-hide">
+                                                <button class="close" data-close="alert"></button>
+                                                <span></span>
+                                            </div>
+                                            <div class="form-actions top" style="height: 80px;">
+                                                <div class="btn-set pull-left">
+                                                    <button type="submit" class="btn green">Save</button>
+                                                    <button type="button" class="btn blue" data-bind="text: (model.Id() != null &amp;&amp; model.Id() != '') ? 'Refresh': 'Reset', click: reset">Refresh</button>
+                                                    <button type="button" class="btn purple" data-bind="visible: (model.Id() != null), click: remove">Delete</button>
+                                                </div>
+                                            </div>
+                                            <div class="form-body">
+                                                <div class="form-group">
+                                                    <label class="control-label">Tab Name</label>
+                                                    <input data-bind="value: model.Name" name="name" type="text" class="form-control" placeholder="Name of Master Page">
+                                                </div>
+                                                <div class="form-group" data-bind="visible: model.Id() != null &amp;&amp; model.Id() != ''">
+                                                    <p class="form-control-static">
+                                                        <i class="fa fa-clock-o"></i> <span data-bind="text: model.ModifiedOn">2014-11-11</span>&nbsp;
+                                                        <i class="fa fa-user"></i> <span data-bind="text: model.ModifierName">developer</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="form-actions">
+                                                <div class="btn-set pull-left">
+                                                    <button type="submit" class="btn green">Save</button>
+                                                    <button type="button" class="btn blue" data-bind="text: (model.Id() != null &amp;&amp; model.Id() != '') ? 'Refresh': 'Reset', click: reset">Refresh</button>
+                                                    <button type="button" class="btn purple" data-bind="visible: (model.Id() != null), click: remove">Delete</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <form id="pages-form" action="#" class="form" data-bind="visible: model.ObjectType() == 'page'">
+                                            <div class="alert alert-danger display-hide">
+                                                <button class="close" data-close="alert"></button>
+                                                <span></span>
+                                            </div>
+                                            <div class="form-actions top" style="height: 80px;">
+                                                <div class="btn-set pull-left">
+                                                    <button type="submit" class="btn green">Save</button>
+                                                    <button type="button" class="btn blue" data-bind="text: (model.Id() != null &amp;&amp; model.Id() != '') ? 'Refresh': 'Reset', click: reset">Refresh</button>
+                                                    <button type="button" class="btn purple" data-bind="visible: (model.Id() != null), click: remove">Delete</button>
+                                                </div>
+                                            </div>
+                                            <div class="form-body">
+                                                <div class="form-group col-lg-4">
+                                                    <label class="control-label">Page Name</label>
+                                                    <input data-bind="value: model.Name" name="name" type="text" class="form-control" placeholder="Name of Page">
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    <label class="control-label">Table Name</label>
+                                                    <input data-bind="value: model.TableName" name="tableName" type="text" class="form-control" placeholder="Name of Table">
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    <label class="control-label">Tab</label>
+                                                    <select id="tablist" name="tabId" class="form-control" data-placeholder="Select a Master Tab..." data-bind="foreach: tabList, value: model.TabId">
+                                                        <option data-bind="value: Id, text: Name"></option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group" data-bind="visible: model.Id() != null &amp;&amp; model.Id() != ''">
+                                                    <p class="form-control-static">
+                                                        <i class="fa fa-clock-o"></i> <span data-bind="text: model.ModifiedOn">2014-11-11</span>&nbsp;
+                                                        <i class="fa fa-user"></i> <span data-bind="text: model.ModifierName">developer</span>
+                                                    </p>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <ul class="nav nav-tabs">
+                                                            <li class="active"><a href="#tab-template" data-toggle="tab"><i class="fa fa-html5"></i>Template</a></li>
+                                                            <li data-bind="visible: model.Id() != null && model.Id() != ''"><a href="#tab-history" data-toggle="tab"><i class="fa fa-calendar"></i>History</a></li>
+                                                        </ul>
+                                                        <div class="tab-content">
+                                                            <div class="tab-pane active" id="tab-template">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Template</label>
+                                                                    <select id="templatelist" name="templateId" class="form-control" data-placeholder="Select a Template..." data-bind="foreach: templateList, value: model.TemplateId, event: {change: onTemplateChanged}">
+                                                                        <option data-bind="value: Id, text: Name"></option>
+                                                                    </select>
+                                                                    <pre id="html-editor" class="editor"></pre>
+                                                                    <div><span class="page-count-note" data-bind="visible: (model.TemplateId() &amp;&amp; pageCountForSelectedTemplate() > 0), attr: {title: pagesForSelectedTemplate}" data-placement="bottom" data-original-title="Tooltip in bottom"><i class="fa fa-warning"></i> Note, this Template is used by <span data-bind="text: pageCountForSelectedTemplate"></span> other page(s).</span>&nbsp;<i class="fa fa-expand" style="float: right; cursor: pointer; margin-top: 5px; margin-right: 5px;" onclick="edit2(Pages.model.Html(), 'html', Pages.editor2_callback, 'html')"></i></div>
+                                                                    <div class="note note-warning" style="cursor: pointer;" id="template-file">
+                                                                        Drag and drop a template file or click here to insert template.
+                                                                        <div data-bind="visible: invalidTemplate">Oops!!!, you might select invalid template.</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label class="checkbox"><input id="require-table-checkbox" type="checkbox" data-bind="checked: model.IsTableRequired" name="requireTable" value="1"> Is Table Required</label>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Master Page</label>
+                                                                    <select id="masterpagelist" class="form-control" data-placeholder="Select a Master Page..." data-bind="foreach: masterPageList, value: model.MasterPageId">
+                                                                        <option data-bind="value: Id, text: Name"></option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="tab-pane" id="tab-history">
+                                                                <div class="row">
+                                                                    <div class="col-md-6 col-sm-12">
+                                                                        <div class="btn-group pull-left">
+                                                                            <input type="text" class="btn form-filter input-sm form-control input-inline" name="Html" data-bind="value: history.search.Html" />
+                                                                            <a class="btn btn-sm btn-fit-height yellow" data-bind="click: history.load"><i class="fa fa-search"></i> Search</a>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6 col-sm-12">
+                                                                        <div class="btn-group pull-right">
+                                                                            <select name="countPerPage" class="hidden btn select2 form-control input-sm input-inline" data-bind="value: history.search.countPerPage, event: {change: refresh}">
+                                                                                <option value="5">5 records</option>
+                                                                                <option value="10">10 records</option>
+                                                                                <option value="15">15 records</option>
+                                                                                <option value="20">20 records</option>
+                                                                                <option value="50">50 records</option>
+                                                                                <option value="100">100 records</option>
+                                                                            </select>
+                                                                            <button class="btn btn-sm btn-fit-height" data-bind="click: history.previousPage, attr: {disabled: history.search.currentPage() <= 1}"> << </button>
+                                                                            <input style="width: 50px;" class="btn form-control input-sm input-inline" type="number" min="1" max="100" data-bind="value: history.search.currentPage, event: {change: history.load}" />
+                                                                            <button class="btn btn-sm btn-fit-height" data-bind="click: history.nextPage, attr: {disabled: history.search.currentCount() < history.search.countPerPage()}"> >> </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <hr style="margin-top:1px; margin-bottom: 10px" />
+                                                                <div class="row">
+                                                                    <div class="col-sm-12">
+                                                                        <div class="tabbable tabs-left tabbable-with-bar">
+                                                                            <ul id="historylist" class="nav nav-tabs tabs-left" data-bind="foreach: history.modelList">
+                                                                                <li class=""><a href="#history-model" data-toggle="tab" data-bind="text: ActionTime.toLocaleString(), click: $root.history.selectModel"></a></li>
+                                                                            </ul>
+                                                                            <div class="tab-content">
+                                                                                <div class="tab-pane" id="history-model">
+                                                                                    <pre id="history-html-viewer" class="editor"></pre>
+                                                                                    <div class="btn-group">
+                                                                                        <select id="history-masterpagelist" disabled="true" class="btn form-control input-inline input-sm" data-placeholder="No Master Page" data-bind="foreach: $root.masterPageList, value: $root.history.model.MasterPageId">
+                                                                                            <option data-bind="value: Id, text: Name"></option>
+                                                                                        </select>
+                                                                                        <label class="btn checkbox input-inline input-sm" style="margin-top: 0px;"><input disabled="true" id="history-require-table-checkbox" type="checkbox" data-bind="checked: $root.history.model.IsTableRequired" name="requireTable" value="1"> Is Table Required</label>
+                                                                                    </div>
+                                                                                    <div class="btn-group pull-right">
+                                                                                        <a class="btn btn-sm btn-fit-height red" data-bind="click: history.revert"><i class="fa fa-reply"></i> Revert</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-actions">
+                                                <div class="btn-set pull-left">
+                                                    <button type="submit" class="btn green">Save</button>
+                                                    <button type="button" class="btn blue" data-bind="text: (model.Id() != null &amp;&amp; model.Id() != '') ? 'Refresh': 'Reset', click: reset">Refresh</button>
+                                                    <button type="button" class="btn purple" data-bind="visible: (model.Id() != null), click: remove">Delete</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <script src="/themes/admin/assets/admin/pages/scripts/pages.js" type="text/javascript"></script>
+                        <script>
+                                                                        jQuery(document).ready(function() {
+                                                                            Metronic.init(); // init metronic core componets
+                                                                            Layout.init(); // init layout
+                                                                            validateLogin();
+
+                                                                            Pages.init();
+                                                                            ko.applyBindings(Pages);
+                                                                        });
+                        </script>
+                    </div>
+                    <!-- END PAGE CONTENT INNER -->
+                </div>
